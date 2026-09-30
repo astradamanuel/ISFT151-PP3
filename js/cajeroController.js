@@ -40,11 +40,8 @@ export class CajeroController {
   irAMenu() {
     this.estadoActual = 'MENU';
     this.bufferEntrada = '';
-    this.view.actualizarPantalla(
-      'MENÚ PRINCIPAL',
-      '1. Consultar Saldo | 2. Extraer Dinero',
-      'Seleccione una opción'
-    );
+    var mensajeMenu = "1. CONSULTAR SALDO\n2. EXTRAER DINERO\n3. TRANSFERIR";
+    this.view.actualizarPantalla("MENÚ PRINCIPAL", mensajeMenu, "Seleccione una opción");
   }
 
   irAExtraer() {
