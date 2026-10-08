@@ -2,10 +2,8 @@ import { CajeroModel } from './cajeroModel.js';
 import { CajeroView } from './cajeroView.js';
 import { CajeroController } from './cajeroController.js';
 
-// 1. Obtener la referencia de la vista unificada
 var vista = document.getElementById('cajero');
 
-// 2. Instanciar Modelo y Controlador
 var modelo = new CajeroModel();
 
 if (vista) {

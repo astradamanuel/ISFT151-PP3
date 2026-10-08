@@ -1,3 +1,12 @@
+// insertarTarjeta
+// retirarTarjeta
+// validarPin
+// pinBloqueado
+// obtenerSaldo
+// extraerDinero
+// depositarDinero
+// registrarMovimiento
+
 export class CajeroModel {
   constructor() {
     this.saldo = 50000;

@@ -1,5 +1,3 @@
-// cajeroController.js
-
 export class CajeroController {
   constructor(model, view) {
     this.model = model;
@@ -12,7 +10,6 @@ export class CajeroController {
   }
 
   iniciar() {
-    // Escuchar los eventos emitidos por el nuevo componente unificado
     this.view.addEventListener('tecla-presionada', this.manejarTecla);
     this.irAEstadoInicio();
   }
@@ -25,6 +22,7 @@ export class CajeroController {
       'Presione ACEPTAR para comenzar',
       ''
     );
+    this.view.hablar('Bienvenido a Red Link. Presione ACEPTAR para comenzar.');
   }
 
   irAPedirPin() {
@@ -35,13 +33,19 @@ export class CajeroController {
       'Ingrese su clave de 4 dígitos:',
       ''
     );
+    this.view.hablar('Ingrese su clave de cuatro dígitos.');
   }
 
   irAMenu() {
     this.estadoActual = 'MENU';
     this.bufferEntrada = '';
     var mensajeMenu = "1. CONSULTAR SALDO\n2. EXTRAER DINERO\n3. TRANSFERIR";
-    this.view.actualizarPantalla("MENÚ PRINCIPAL", mensajeMenu, "Seleccione una opción");
+    this.view.actualizarPantalla(
+      'MENÚ PRINCIPAL',
+      mensajeMenu,
+      'Seleccione una opción'
+    );
+    this.view.hablar('Menú principal. Seleccione una opción.');
   }
 
   irAExtraer() {
@@ -52,6 +56,7 @@ export class CajeroController {
       'Ingrese el monto (múltiplo de 100):',
       '$ 0'
     );
+    this.view.hablar('Ingrese el monto a extraer.');
   }
 
   manejarTecla(evento) {
@@ -92,6 +97,7 @@ export class CajeroController {
               'Superó los 3 intentos fallidos.',
               'Presione CANCELAR'
             );
+            this.view.hablar('Tarjeta bloqueada. Superó los tres intentos fallidos.');
             return;
           } else {
             this.bufferEntrada = '';
@@ -100,6 +106,7 @@ export class CajeroController {
               'Intente nuevamente:',
               ''
             );
+            this.view.hablar('Clave incorrecta. Intente nuevamente.');
             return;
           }
         }
@@ -128,6 +135,7 @@ export class CajeroController {
         'Su saldo disponible es: $' + saldo,
         'Presione CANCELAR para salir'
       );
+      this.view.hablar('Su saldo disponible es de ' + saldo + ' pesos.');
     } else if (valor === '2') {
       this.irAExtraer();
     }
@@ -145,12 +153,14 @@ export class CajeroController {
           'Retire su dinero. Saldo restante: $' + resultado.saldoRestante,
           'Presione CANCELAR para salir'
         );
+        this.view.hablar('Operación exitosa. Retire su dinero por la ranura.');
       } else {
         this.view.actualizarPantalla(
           'ERROR DE EXTRACCIÓN',
           resultado.mensaje,
           'Presione CANCELAR para volver'
         );
+        this.view.hablar(resultado.mensaje);
       }
       return;
     } else if (!isNaN(Number(valor))) {
