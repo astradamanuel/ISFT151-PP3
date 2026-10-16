@@ -1,12 +1,3 @@
-// insertarTarjeta
-// retirarTarjeta
-// validarPin
-// pinBloqueado
-// obtenerSaldo
-// extraerDinero
-// depositarDinero
-// registrarMovimiento
-
 export class CajeroModel {
   constructor() {
     this.saldo = 50000;
@@ -16,9 +7,55 @@ export class CajeroModel {
     this.intentosPin = 0;
     this.maxIntentos = 3;
     this.historial = [];
+
+    // --- DATOS SIMULADOS PARA TRANSFERENCIAS ---
+    this.destinatariosFrecuentes = [
+      { id: 1, nombre: "JUAN PEREZ", cbu: "0000000000000000000001", banco: "NACION" },
+      { id: 2, nombre: "MARIA GARCIA", cbu: "0000000000000000000002", banco: "GALICIA" }
+    ];
+
+    this.baseDeDatosBancaria = {
+      "juan.perez": { nombre: "JUAN PEREZ", banco: "NACION" },
+      "maria.garcia": { nombre: "MARIA GARCIA", banco: "GALICIA" },
+      "0000000000000000000003": { nombre: "PEDRO LOPEZ", banco: "SANTANDER" }
+    };
   }
 
-  // Insertar o retirar tarjeta
+  // --- MÉTODOS PARA TRANSFERENCIAS ---
+
+  obtenerDestinatariosFrecuentes() {
+    return this.destinatariosFrecuentes;
+  }
+
+  obtenerDestinatarioPorId(id) {
+    for (var i = 0; i < this.destinatariosFrecuentes.length; i++) {
+      if (this.destinatariosFrecuentes[i].id === id) {
+        return this.destinatariosFrecuentes[i];
+      }
+    }
+    return null;
+  }
+
+  buscarCuentaPorAliasOCBU(clave) {
+    return this.baseDeDatosBancaria[clave] || null;
+  }
+
+  transferirDinero(monto, destinatario) {
+    var numeroMonto = Number(monto);
+
+    if (numeroMonto > this.saldo) {
+      return { exito: false, mensaje: "Saldo insuficiente." };
+    }
+    
+    this.saldo = this.saldo - numeroMonto;
+    
+    this.registrarMovimiento("Transferencia a " + destinatario.nombre, numeroMonto);
+
+    return { exito: true, saldoRestante: this.saldo };
+  }
+
+  // --- MÉTODOS ORIGINALES) ---
+
   insertarTarjeta() {
     this.tarjetaInsertada = true;
   }
@@ -28,7 +65,6 @@ export class CajeroModel {
     this.intentosPin = 0;
   }
 
-  // Validación de PIN
   validarPin(pinIngresado) {
     if (pinIngresado === this.pinCorrecto) {
       this.intentosPin = 0;
@@ -43,12 +79,10 @@ export class CajeroModel {
     return this.intentosPin >= this.maxIntentos;
   }
 
-  // Consulta de Saldo
   obtenerSaldo() {
     return this.saldo;
   }
 
-  // Extracción de Dinero con validaciones
   extraerDinero(monto) {
     var numeroMonto = Number(monto);
 
@@ -68,14 +102,12 @@ export class CajeroModel {
       return { exito: false, mensaje: "Saldo insuficiente." };
     }
 
-    // Si pasa todas las validaciones:
     this.saldo = this.saldo - numeroMonto;
     this.registrarMovimiento("Extracción", numeroMonto);
 
     return { exito: true, saldoRestante: this.saldo };
   }
 
-  // Depósito
   depositarDinero(monto) {
     var numeroMonto = Number(monto);
 
@@ -89,7 +121,6 @@ export class CajeroModel {
     return { exito: true, nuevoSaldo: this.saldo };
   }
 
-  // Método auxiliar interno para guardar transacciones
   registrarMovimiento(tipo, monto) {
     var registro = {
       tipo: tipo,
