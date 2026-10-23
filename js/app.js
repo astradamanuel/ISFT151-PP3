@@ -3,7 +3,6 @@ import { CajeroView } from './cajeroView.js';
 import { CajeroController } from './cajeroController.js';
 
 var vista = document.getElementById('cajero');
-
 var modelo = new CajeroModel();
 
 if (vista) {

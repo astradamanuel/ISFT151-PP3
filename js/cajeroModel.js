@@ -1,3 +1,5 @@
+import { DESTINATARIOS_FRECUENTES, BASE_DATOS_BANCARIA } from './mockData.js';
+
 export class CajeroModel {
   constructor() {
     this.saldo = 50000;
@@ -8,20 +10,9 @@ export class CajeroModel {
     this.maxIntentos = 3;
     this.historial = [];
 
-    // --- DATOS SIMULADOS PARA TRANSFERENCIAS ---
-    this.destinatariosFrecuentes = [
-      { id: 1, nombre: "JUAN PEREZ", cbu: "0000000000000000000001", banco: "NACION" },
-      { id: 2, nombre: "MARIA GARCIA", cbu: "0000000000000000000002", banco: "GALICIA" }
-    ];
-
-    this.baseDeDatosBancaria = {
-      "juan.perez": { nombre: "JUAN PEREZ", banco: "NACION" },
-      "maria.garcia": { nombre: "MARIA GARCIA", banco: "GALICIA" },
-      "0000000000000000000003": { nombre: "PEDRO LOPEZ", banco: "SANTANDER" }
-    };
+    this.destinatariosFrecuentes = DESTINATARIOS_FRECUENTES;
+    this.baseDeDatosBancaria = BASE_DATOS_BANCARIA;
   }
-
-  // --- MÉTODOS PARA TRANSFERENCIAS ---
 
   obtenerDestinatariosFrecuentes() {
     return this.destinatariosFrecuentes;
@@ -53,8 +44,6 @@ export class CajeroModel {
 
     return { exito: true, saldoRestante: this.saldo };
   }
-
-  // --- MÉTODOS ORIGINALES) ---
 
   insertarTarjeta() {
     this.tarjetaInsertada = true;
@@ -91,7 +80,7 @@ export class CajeroModel {
     }
 
     if (numeroMonto % 100 !== 0) {
-      return { exito: false, mensaje: "Ingrese un monto múltiplo de $100." };
+      return { exito: false, mensaje: "Ingrese un monto múltiplo de 100 pesos." };
     }
 
     if (numeroMonto > this.limiteExtraccion) {
