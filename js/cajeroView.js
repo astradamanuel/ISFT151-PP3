@@ -6,6 +6,7 @@ export class CajeroView extends HTMLElement {
 
     this.actualizarPantalla = this.actualizarPantalla.bind(this);
     this.manejarClicTecla = this.manejarClicTecla.bind(this);
+    this.botonesTeclado = [];
 
     this.tituloElemento = null;
     this.mensajeElemento = null;
@@ -163,7 +164,7 @@ export class CajeroView extends HTMLElement {
           this.manejarClicTecla.bind(this, valorTecla)
         );
       }
-
+      this.botonesTeclado.push(boton);
       contenedorTeclado.appendChild(boton);
     }
 
@@ -196,6 +197,15 @@ export class CajeroView extends HTMLElement {
     });
 
     this.dispatchEvent(eventoTecla);
+  }
+
+  bloquearTeclado(bloquear) {
+    for (var i = 0; i < this.botonesTeclado.length; i++) {
+      var boton = this.botonesTeclado[i];
+      if (boton.textContent !== 'CANCELAR' && boton.textContent !== '') {
+        boton.disabled = bloquear;
+      }
+    }
   }
 
   reproducirBeep() {

@@ -7,7 +7,6 @@ export class CajeroController {
     this.bufferEntrada = '';
     this.manejarTecla = this.manejarTecla.bind(this);
 
-    // TABLA DE DESPACHO: acciones de cancelar (usando funciones tradicionales)
     // TABLA DE DESPACHO: acciones de cancelar
     this.accionesCancelar = {
       'INICIO': function() {
@@ -29,6 +28,7 @@ export class CajeroController {
       }.bind(this),
       'TARJETA_BLOQUEADA': function() {
         this.model.retirarTarjeta();
+        this.view.bloquearTeclado(false); 
         this.irAEstadoInicio();
       }.bind(this),
       'ERROR_EXTRACCION': function() {
@@ -64,6 +64,8 @@ export class CajeroController {
       'TRANSFERIR_INGRESO': function(valor) { return this.procesarTransferirIngreso(valor); }.bind(this),
       'TRANSFERIR_MONTO': function(valor) { return this.procesarTransferirMonto(valor); }.bind(this),
       'TRANSFERIR_CONFIRMAR': function(valor) { return this.procesarTransferirConfirmar(valor); }.bind(this),
+      'TARJETA_BLOQUEADA': function(valor) {
+      },
       'CONSULTAR_SALDO': function(valor) {
         if (valor === '1') { this.irAMenu(); }
       }.bind(this),
@@ -166,18 +168,7 @@ export class CajeroController {
     }
   }
 
-  actualizarPantallaSegunEstado() {
-    if (this.estadoActual === 'PEDIR_PIN') {
-      const enmascarado = '*'.repeat(this.bufferEntrada.length);
-      this.view.actualizarPantalla('INGRESO DE PIN', 'Ingrese su clave de 4 dígitos:(1234)', enmascarado);
-    } 
-    else if (this.estadoActual === 'EXTRAER') {
-      this.view.actualizarPantalla('EXTRAER DINERO', 'Ingrese el monto (múltiplo de 100):', '$ ' + (this.bufferEntrada || '0'));
-    }
-  }
-
   procesarPin(valor) {
-  
     if (valor === 'BORRAR') {
       this.bufferEntrada = this.bufferEntrada.slice(0, -1);
       this.actualizarPantallaSegunEstado();
@@ -204,10 +195,22 @@ export class CajeroController {
       }
 
       this.bufferEntrada = '';
-      this.view.actualizarPantalla('PIN INCORRECTO', 'Intente nuevamente: 1233244652893205786767 ', '');
+      this.view.actualizarPantalla('PIN INCORRECTO', 'Intente nuevamente: (1234)', '');
       this.view.hablar('Clave incorrecta. Intente nuevamente.');
       return;
     }
+  }
+
+  irATarjetaBloqueada() {
+    this.estadoActual = 'TARJETA_BLOQUEADA';
+    this.bufferEntrada = '';
+    this.view.actualizarPantalla(
+      'TARJETA BLOQUEADA',
+      'Superó el límite de intentos permitidos.\nSu tarjeta ha sido retenida.',
+      'CANCELAR: Retirar Tarjeta'
+    );
+    this.view.hablar('Tarjeta bloqueada por exceder los intentos. Presione cancelar para retirar su tarjeta.');
+    this.view.bloquearTeclado(true); // Bloquea todo el teclado excepto Cancelar
   }
 
   procesarMenu(valor) {

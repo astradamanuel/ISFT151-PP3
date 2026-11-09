@@ -45,10 +45,6 @@ export class CajeroModel {
     return { exito: true, saldoRestante: this.saldo };
   }
 
-  insertarTarjeta() {
-    this.tarjetaInsertada = true;
-  }
-
   retirarTarjeta() {
     this.tarjetaInsertada = false;
     this.intentosPin = 0;
@@ -95,19 +91,6 @@ export class CajeroModel {
     this.registrarMovimiento("Extracción", numeroMonto);
 
     return { exito: true, saldoRestante: this.saldo };
-  }
-
-  depositarDinero(monto) {
-    var numeroMonto = Number(monto);
-
-    if (isNaN(numeroMonto) || numeroMonto <= 0) {
-      return { exito: false, mensaje: "Monto inválido." };
-    }
-
-    this.saldo = this.saldo + numeroMonto;
-    this.registrarMovimiento("Depósito", numeroMonto);
-
-    return { exito: true, nuevoSaldo: this.saldo };
   }
 
   registrarMovimiento(tipo, monto) {
