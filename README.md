@@ -12,4 +12,8 @@ https://docs.google.com/document/d/17B3zP5M5B_xYc9mbzc-9FLtAKk1VvXLPGO5dC20OJVk/
 
 Video demostrativo:
 
-https://github.com/user-attachments/assets/3569028a-eef6-4e34-91e5-9484f5cdab93
+
+
+https://github.com/user-attachments/assets/e260766c-b8b8-46aa-9402-a4afd093f50e
+
+
