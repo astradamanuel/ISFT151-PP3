@@ -17,3 +17,8 @@ Video demostrativo:
 https://github.com/user-attachments/assets/e260766c-b8b8-46aa-9402-a4afd093f50e
 
 
+Video explicativo de parte del codigo:
+
+
+
+https://youtu.be/kPaWgGFZWZA
